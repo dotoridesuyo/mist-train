@@ -1,0 +1,178 @@
+@charset "UTF-8";
+/* 짧은 게임 영역에서도 타이틀·엔딩의 처음과 끝에 접근한다. */
+#game:focus{outline:none}
+#title,#ending{overflow-y:auto;align-items:safe center;overscroll-behavior:contain}
+#title .title-content,#ending .ending-content{padding-block:16px}
+:root{color-scheme:dark;--ink:#e8e4d9;--muted:#a3aaa3;--accent:#bdcbbd;--text-scale:1}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#090d0d;color:var(--ink);font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif}body{display:grid;place-items:center}button,input,select{font:inherit}button{cursor:pointer;color:inherit;border:1px solid #67746a;background:#18221ee0;padding:12px 20px;transition:background .18s,border-color .18s}button:hover{background:#34443a;border-color:#b9c8bc}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #e0d5ad;outline-offset:4px}[hidden]{display:none!important}
+#game{position:relative;width:min(100vw,177.7778vh);height:min(100vh,56.25vw);overflow:hidden;background:#151b1c;isolation:isolate}canvas{width:100%;height:100%;display:block;image-rendering:pixelated}.shade{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 38%,#060b0b65);z-index:1}
+#hud{position:absolute;inset:4% 4% auto;display:flex;justify-content:space-between;align-items:center;z-index:3}.location{display:flex;align-items:center;gap:14px;background:#101919b8;border:1px solid #a1aaa168;padding:10px 16px;font-size:clamp(10px,1.25vw,17px);letter-spacing:.08em}.rail-icon{font-size:22px}.dot{width:5px;height:5px;background:#c5cdc3;border-radius:50%;margin-left:10px}#pause{padding:7px 13px;background:#0d15158a;border-color:#74807766}#chapter{position:absolute;top:16%;left:4.2%;display:flex;flex-direction:column;gap:9px;z-index:2;font-size:clamp(9px,1vw,14px);color:#d9ddd5}#chapter-number{font-size:10px;letter-spacing:.2em;color:#96aaa0}#objective{position:absolute;right:4%;top:16%;max-width:37%;font-size:clamp(9px,1.1vw,15px);color:#c3ccc5;text-align:right;z-index:2;text-shadow:0 2px 4px #000}#hint{position:absolute;display:flex;align-items:center;gap:9px;transform:translate(-50%,-100%);z-index:3;white-space:nowrap;padding:7px 10px;background:#111919e8;border:1px solid #a4b2a6;font-size:clamp(9px,1vw,14px)}#hint-key{border:1px solid #859289;padding:1px 5px;color:white}
+#controls{position:absolute;bottom:2.5%;left:4%;display:flex;gap:20px;font-size:clamp(8px,.85vw,12px);color:#9daaa1;z-index:2}#toast{position:absolute;top:28%;left:50%;transform:translateX(-50%);z-index:8;max-width:80%;background:#122018f5;border:1px solid #96a29b;padding:13px 24px;font-size:clamp(18px,1.9vw,24px);font-weight:400;line-height:1.5;text-align:center;color:#f2f3ee;text-shadow:0 1px 3px #000;box-shadow:0 8px 24px #0008;opacity:0;transition:opacity .3s;pointer-events:none}
+.overlay{position:absolute;inset:0;z-index:10;background:linear-gradient(90deg,#080f10f5 0%,#0a1212db 43%,#0a12123a 100%);display:flex;align-items:center}.title-content{margin-left:9%;max-width:62%}.eyebrow{font-size:clamp(9px,.8vw,12px);letter-spacing:.28em;color:#9bada2}.title-content h1{font-family:serif;font-size:clamp(38px,6.4vw,92px);font-weight:400;letter-spacing:.18em;margin:25px 0 22px;line-height:1.1}.title-content h1 span{display:block;font-family:Arial,sans-serif;font-size:clamp(10px,1vw,15px);letter-spacing:.6em;margin-top:17px;color:#a4b2a8}.title-rule{width:46px;height:1px;background:#bac1af;margin:25px 0}.title-content h2{font-size:clamp(12px,1.25vw,18px);font-weight:400;letter-spacing:.04em}.title-content p{color:#abb6ad;font-size:clamp(11px,1.2vw,17px);line-height:1.9}.title-buttons{display:flex;gap:12px;align-items:center;margin-top:27px}.primary{background:#bdc8b7;color:#142219;border-color:#bdc8b7}.primary:hover{background:#e0e5d6;color:#142219}.primary span{margin-left:25px}.title-content .title-note{font-size:clamp(8px,.8vw,12px);margin-top:20px;color:#82968a}.demo-label{font-size:9px;letter-spacing:.18em;margin-top:35px;color:#6c8376}.modal{background:#050b0bc9;justify-content:center;backdrop-filter:blur(5px)}.menu-card{width:min(470px,80%);padding:35px;background:#15201cf5;border:1px solid #728277}.menu-card h2{font-size:23px;font-weight:400;margin:20px 0 25px}.menu-card>button{width:100%;margin-bottom:14px}.menu-card label{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:22px 0;font-size:14px}.menu-card input{width:45%;accent-color:#a5b49e}.menu-card select{background:#202d26;color:#ddd;padding:6px}.menu-card small{display:block;color:#8d9f92;line-height:1.5;font-size:11px}.ending-content{margin-left:10%;max-width:72%}.ending-content h2{font-family:serif;font-size:clamp(25px,3.5vw,50px);font-weight:400;line-height:1.5;letter-spacing:.04em}.ending-content p{font-size:clamp(12px,1.3vw,18px);color:#b7c1b9;line-height:1.9}.ending-rule{width:70px;height:1px;background:#879e8d;margin:26px 0}.ending-note{font-size:clamp(10px,1vw,14px)!important}.ending-content button{margin:15px 8px 0 0;font-size:clamp(10px,1vw,14px)}#fade{position:absolute;inset:0;background:#080d0e;opacity:0;transition:opacity .45s;pointer-events:none;z-index:20}#fade.on{opacity:1;pointer-events:auto}#touch{position:absolute;bottom:5%;left:4%;right:4%;justify-content:space-between;z-index:4;pointer-events:none}#touch button{pointer-events:auto;background:#112017ba;padding:10px 20px}#touch #right{margin-right:auto;margin-left:8px}
+@media(pointer:coarse){#touch{display:flex}#controls{display:none}.title-buttons button{padding:10px 12px}}@media(max-width:700px){.title-content h1{margin:12px 0}.title-rule{margin:14px 0}.title-buttons{margin-top:12px}.title-content .title-note{margin-top:10px}.demo-label{margin-top:12px}.location{padding:5px 8px;gap:8px}.menu-card{padding:16px;max-height:90%;overflow:auto}.menu-card h2{font-size:17px;margin:12px 0}.menu-card label{margin:14px 0}.menu-card>button{padding:8px;margin-bottom:8px}.ending-content h2{margin:12px 0}.ending-rule{margin:12px 0}}
+
+/* 첨부 시안의 얇은 테두리, 차가운 회색, 화면 하단의 낮은 대사창. */
+:root{--ink:#e5e7e5;--accent:#a9c7c9}button{background:#151b1de0;border-color:#747b7d}button:hover{background:#343c3e;border-color:#b9c1c3}.primary{background:#d0d4d1;color:#1c2325;border-color:#d0d4d1}.primary:hover{background:#f0f2ee;color:#1c2325}.shade{background:radial-gradient(ellipse at center,transparent 52%,#02060b35)}canvas{image-rendering:auto}
+#hud{inset:4% 3.4% auto}.location{background:#12181abc;border:1px solid #b5bbba8c}.dot{background:#c5cccd}#chapter{top:14%;left:3.6%;color:#c7cccc;opacity:.85}#chapter-number{color:#adb6b9}#objective{top:14%;color:#c5cbcd;text-shadow:0 1px 4px #000;max-width:43%}#hint{background:#101619e8;border-color:#c0c7c5}#hint-key{border-color:#8e999b}
+#controls{left:3.6%;bottom:1.2%;color:#bcc4c4;font-size:10px}#toast{background:#1a2024f5;border-color:#96a2a6}
+.overlay{background:linear-gradient(90deg,#080c11eb 0%,#0a1016c4 39%,#0b141728 80%)}.title-content{margin-left:8%}.title-content h1{color:#e1e5e2;text-shadow:0 3px 28px #000}.title-content p{color:#bdc5c6}.eyebrow{color:#a5b6bb}.title-content .title-note{color:#a1aeb2}.demo-label{color:#a2b2b6}.menu-card{background:#171e23f5;border-color:#899394}.modal{background:#03070bc9}.menu-card select{background:#262e33}#memory-label{position:absolute;top:5%;left:50%;transform:translateX(-50%);z-index:3;font-size:clamp(10px,1.2vw,16px);letter-spacing:.12em;color:#d0d5d3;padding:7px 15px;background:#111719a6;border:1px solid #9fa9a54a;white-space:nowrap}#listen-caption{position:absolute;bottom:6%;left:20%;right:20%;padding:16px 22px;background:#111719df;border:1px solid #9fa9a56e;color:#e3e6de;text-align:center;font-size:clamp(12px,1.5vw,20px);line-height:1.7;z-index:4}#asset-loading{position:absolute;inset:0;z-index:25;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:15px;background:#0a1016}#asset-loading span{font-family:serif;font-size:25px;color:#d0d9d6}#asset-loading small{color:#84979f}#asset-loading p{max-width:80%;text-align:center;line-height:1.8}button:disabled{opacity:.5;cursor:wait}
+@media(max-width:700px){#chapter{font-size:9px}#objective{font-size:9px}#controls{font-size:8px}#memory-label{top:3%;font-size:9px}#listen-caption{left:10%;right:10%}}
+@media(pointer:coarse){#listen-caption{bottom:18%}}
+#touch{display:none}@media(pointer:coarse){#touch{display:flex}}
+
+
+
+
+/* 기억 장면만 필름의 투명 영역 안에 배치한다. */
+#game{--memory-width:64%;--memory-height:71.1111%}
+#memory-window{position:absolute;top:5%;left:50%;width:var(--memory-width);aspect-ratio:16 / 10;transform:translateX(-50%);z-index:3;pointer-events:none;isolation:isolate}
+#memory-scene{position:absolute;left:2.4%;top:10.5%;width:95.2%;height:79%;filter:grayscale(1);object-fit:cover;background:#101214;z-index:0}
+.memory-film-frame{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:1;pointer-events:none;user-select:none}
+#memory-window:not([hidden]){animation:memory-appear .24s ease-out both}
+#memory-label{top:calc(5% + var(--memory-height));max-width:var(--memory-width);transform:translate(-50%,-100%);z-index:4;padding:4px 12px;font-size:clamp(9px,1vw,14px);line-height:1.4;letter-spacing:.06em;white-space:normal;text-align:center;pointer-events:none}
+#game:has(#memory-window:not([hidden])) #listen-caption{bottom:3.3%;max-height:42%;overflow:auto;overscroll-behavior:contain}
+@keyframes memory-appear{from{opacity:0;transform:translate(-50%,4px)}to{opacity:1;transform:translate(-50%,0)}}
+@media(max-width:700px),(pointer:coarse){
+  #game{--memory-width:52%;--memory-height:57.7778%}
+  #memory-label{padding:2px 7px;font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){#memory-window:not([hidden]){animation:none}}
+
+/* 실측한 최대 내용 높이를 모든 대사창에 동일하게 적용한다. */
+:is(#dialogue,.dialogue-sizing-probe){position:absolute;left:17%;right:17%;bottom:3.3%;display:grid;grid-template-columns:80px minmax(0,1fr);grid-template-rows:auto auto auto;align-content:start;column-gap:22px;row-gap:4px;padding:13px 26px 9px;background:linear-gradient(105deg,#13171ae8,#11171aeb);border:1px solid #b4beb9b0;border-radius:5px;box-shadow:0 6px 30px #0003;z-index:5}
+#dialogue{height:var(--dialogue-fixed-height,160px);min-height:0;max-height:42%;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+:is(#dialogue,.dialogue-sizing-probe) .dialogue-top{display:flex;grid-column:1;grid-row:1;align-items:start;border-right:1px solid #9ba8a777;padding-right:20px;min-width:0}
+:is(#speaker,.measure-speaker){color:#a8d0d0;font-size:clamp(12px,1.5vw,20px);letter-spacing:.1em;overflow-wrap:anywhere}
+:is(#dialogue-context,.measure-dialogue-context){display:none}
+:is(#line,.measure-line){grid-column:2;grid-row:1;min-width:0;margin:0;font-size:calc(clamp(12px,1.5vw,21px) * var(--text-scale));line-height:1.65;white-space:pre-line;word-break:keep-all;overflow-wrap:anywhere}
+:is(#choices,.measure-choices){grid-column:2;grid-row:2;display:flex;gap:9px;flex-wrap:wrap;min-width:0;margin:12px 0 6px}
+:is(#choices,.measure-choices):empty{display:none}
+:is(#choices,.measure-choices) button{max-width:100%;padding:9px 13px;text-align:left;font-size:clamp(11px,1.1vw,16px);border-color:#929e9f80;word-break:keep-all;overflow-wrap:anywhere}
+:is(#advance,.measure-advance){grid-column:2;grid-row:3;justify-self:end;align-self:start;float:none;border:0;background:none;padding:4px 0;color:#b3c1b6;font-size:10px}
+:is(#advance,.measure-advance) span{font-size:9px;color:#75887b;margin-left:14px}
+:is(#dialogue,.dialogue-sizing-probe).is-narration{grid-template-columns:minmax(0,1fr);column-gap:0}
+:is(#dialogue,.dialogue-sizing-probe).is-narration .dialogue-top{display:none}
+:is(#dialogue,.dialogue-sizing-probe).is-narration :is(#line,.measure-line,#choices,.measure-choices,#advance,.measure-advance){grid-column:1}
+:is(#dialogue,.dialogue-sizing-probe).dialogue-sizing-probe{height:auto;min-height:0;max-height:none;visibility:hidden;pointer-events:none;overflow:auto;scrollbar-gutter:stable;bottom:auto;top:0;right:auto}
+@media(max-width:700px){
+  :is(#dialogue,.dialogue-sizing-probe){left:5%;right:5%;grid-template-columns:49px minmax(0,1fr);column-gap:12px;padding:13px 15px 9px}
+  :is(#dialogue,.dialogue-sizing-probe) .dialogue-top{padding-right:8px}
+  :is(#choices,.measure-choices) button{padding:7px 9px}
+}
+/* 대사창 위 남은 공간 안에서 필름 비율을 유지한다. */
+#game{container-type:size;--memory-width:64cqw;--memory-height:71.1111cqh}
+#memory-window{width:min(var(--memory-width),calc((var(--memory-clearance,89.7cqh) - min(var(--dialogue-fixed-height,160px),42cqh)) * 1.6))}
+#memory-label{top:calc(5cqh + min(var(--memory-height),var(--memory-clearance,89.7cqh) - min(var(--dialogue-fixed-height,160px),42cqh)))}
+@media(max-width:700px),(pointer:coarse){#game{--memory-width:52cqw;--memory-height:57.7778cqh}}
+/* R21: 사용자 수정본의 단일 테두리와 배치 비율. 설정은 실제 HTML 컨트롤로 유지한다. */
+#menu .menu-card{position:relative;width:min(840px,66%);aspect-ratio:849/545;max-height:92%;padding:0;overflow:visible;container-type:inline-size;background:#171f23;border:2px solid #828d8e;color:#d9dedb}
+#menu .menu-card>:is(.eyebrow,h2,label,button,small){position:absolute;left:11.5%;right:11.5%;margin:0}
+#menu .eyebrow{top:11.5%;font-size:1.9cqw;line-height:1.4;letter-spacing:.24em;color:#a0afb0;font-weight:600}
+#menu h2{top:18%;font-size:3.2cqw;line-height:1.4;font-weight:400;letter-spacing:.02em}
+#menu .menu-setting{display:flex;align-items:center;justify-content:space-between;gap:0;font-size:2.9cqw;line-height:1.3}
+#menu .volume-setting{top:31%;height:9%}
+#menu .font-setting{top:44%;height:11%}
+#menu input{width:57%;height:3.4cqw;margin:0;accent-color:#b1c1a5;cursor:pointer}
+#menu select{width:24%;height:100%;padding:0 2cqw;border:2px solid #7a8587;border-radius:0;background:#262f34;color:#d9dedb;font-size:2.9cqw}
+#menu .menu-card>button{width:77%;height:11%;padding:0;font-size:2.9cqw;line-height:1.2;border:2px solid #6b7978;border-radius:0;background:#151e1e;color:#d9dedb}
+#menu #to-title{top:60%}
+#menu #resume{top:73%;background:#d0d6d2;color:#485252;border-color:#d0d6d2}
+#menu .menu-card>button:hover{background:#303b3d;border-color:#bbc5c2}
+#menu #resume:hover{background:#e1e6e2;color:#263232}
+#menu small{top:85.5%;font-size:2.1cqw;line-height:1.4;color:#94a394}
+@media(max-width:700px){#menu .menu-card{width:88%}}
+/* R25: 포토샵 수정본처럼 화면 안내를 오른쪽 위 한 묶음으로 배치한다. */
+#hud{inset:4% 3.4% auto auto;justify-content:flex-end;align-items:flex-start;gap:10px;z-index:4}
+#status-panel{width:clamp(220px,26cqw,360px);max-width:70cqw;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.status-heading{display:flex;align-items:flex-start;justify-content:flex-end;gap:10px;width:100%}
+#status-panel .location{max-width:100%;width:max-content}
+#objective{position:static;top:auto;right:auto;max-width:none;width:100%;line-height:1.45;text-align:right}
+#chapter{position:static;top:auto;left:auto;align-items:flex-end;gap:5px;margin-top:2px;text-align:right}
+:is(#speaker,.measure-speaker){white-space:pre-line;word-break:keep-all;overflow-wrap:normal;line-height:1.45}
+@media(max-width:700px){#hud,.status-heading{gap:7px}#status-panel{gap:4px}#chapter{gap:3px}}
+/* R26: 큰 안내와 목표 → 챕터 제목 → 숫자, 대사 본문을 세로 중앙에 배치. */
+#game{--dialogue-bottom:6%;--memory-clearance:87cqh}
+#status-panel{width:clamp(260px,35cqw,480px)}
+#objective{font-size:clamp(12px,1.5vw,21px);line-height:1.4}
+#chapter{margin-top:0;gap:4px}
+#chapter-title{font-size:clamp(11px,1.2vw,17px);line-height:1.3}
+#chapter-number{font-size:clamp(9px,.9vw,12px);line-height:1.3}
+#recording-count{margin-top:5px;font-size:clamp(11px,1.2vw,17px);line-height:1.3;white-space:nowrap}
+#controls{font-size:clamp(12px,1.2vw,17px);line-height:1.45;gap:24px}
+:is(#dialogue,.dialogue-sizing-probe){bottom:var(--dialogue-bottom,3.3%)}
+#dialogue{grid-template-rows:minmax(min-content,1fr) auto auto;align-content:stretch}
+:is(#dialogue,.dialogue-sizing-probe) .dialogue-top,:is(#line,.measure-line){align-self:center}
+@media(max-width:700px){#game{--dialogue-bottom:9%;--memory-clearance:84cqh}#controls{font-size:clamp(10px,1.6vw,12px);gap:16px}}
+/* R29: 글자 뒤 음영을 좌우 양쪽으로 부드럽게 풀고 위아래 경계도 감춘다. */
+#objective{position:relative;width:max-content;max-width:100%}
+#chapter{position:relative}
+#objective,#chapter,#controls{isolation:isolate}
+#objective::before,#chapter::before,#controls::before{content:"";position:absolute;inset:-7px calc(-1 * clamp(18px,2.5cqw,32px));z-index:-1;pointer-events:none;mix-blend-mode:multiply;background:linear-gradient(90deg,transparent 0%,#0002 8%,#0006 22%,#000a 40%,#000a 60%,#0006 78%,#0002 92%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 25%,#000 75%,transparent 100%)}
+#hud,#controls{z-index:4}
+#chapter{opacity:1}
+#hud,:is(#objective,#chapter-title,#chapter-number,#controls){color:#f5f6f4;text-shadow:0 1px 3px #000,0 0 5px #0008}
+:is(#dialogue,.dialogue-sizing-probe){padding-left:42px}
+@media(max-width:700px){:is(#dialogue,.dialogue-sizing-probe){padding-left:23px}}
+
+/* R45: 도윤의 기억 컷이 보이는 동안에도 균열을 위에 남긴다. */
+#first-contact-fracture{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:4;pointer-events:none;user-select:none;opacity:0}
+#doyun-intrusion{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated;z-index:2;pointer-events:none;user-select:none;opacity:0}
+#doyun-splatter{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:21;pointer-events:none;user-select:none;opacity:0}
+#game.first-contact-fracturing #first-contact-fracture{animation:first-contact-crack 1.3s steps(1,end) both}
+#game.first-contact-fracturing #doyun-intrusion{animation:doyun-memory-intrusion 1.3s ease-out both}
+#game.first-contact-fracturing #doyun-splatter{animation:doyun-splatter-glimpse 1.3s ease-out both}
+#game.first-contact-fracturing #scene{animation:first-contact-offset 1.3s steps(1,end) both}
+@keyframes first-contact-crack{0%,5%{opacity:0}8%,16%{opacity:.48}22%,80%{opacity:.4}91%{opacity:.24}100%{opacity:0}}
+@keyframes doyun-memory-intrusion{0%,13%{opacity:0}22%,79%{opacity:1}91%{opacity:.82}100%{opacity:0}}
+@keyframes doyun-splatter-glimpse{0%,20%{opacity:0}28%,72%{opacity:.58}88%{opacity:.32}100%{opacity:0}}
+@keyframes first-contact-offset{0%{transform:none;filter:none}8%{transform:translate(1px,-1px);filter:contrast(1.08) saturate(.85)}16%{transform:translate(-2px,0);filter:contrast(1.05)}24%,85%{transform:none;filter:none}90%{transform:translate(1px,0)}100%{transform:none}}
+@media(prefers-reduced-motion:reduce){#game.first-contact-fracturing #scene{animation:none}#game.first-contact-fracturing #first-contact-fracture{animation:none;opacity:.4}#game.first-contact-fracturing #doyun-intrusion{animation:none;opacity:1}#game.first-contact-fracturing #doyun-splatter{animation:none;opacity:.58}}
+/* S17: 얼굴을 감춘 삶의 주마등과 열차의 반영. 장면 그림은 생성 이미지다. */
+#life-montage{position:absolute;inset:0;z-index:9;pointer-events:none;background:#050809;overflow:hidden}
+#montage-image{position:absolute;inset:0;width:100%;height:100%;transition:filter .14s ease}
+#montage-image .montage-frame{display:block;width:100%;height:100%;object-fit:cover;pointer-events:none;user-select:none}
+#montage-loading{position:absolute;inset:0;z-index:9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;background:#080e14d9;text-align:center}
+#montage-loading p{margin:0;max-width:90%;font-size:clamp(12px,1.5vw,20px);line-height:1.7;word-break:keep-all;overflow-wrap:anywhere}
+#montage-image.cut{animation:memory-rush .18s cubic-bezier(.12,.7,.25,1) both}
+#montage-flash{position:absolute;inset:0;z-index:1;pointer-events:none;background:#e8eeec;opacity:0}
+#montage-flash.pulse{animation:memory-flash .14s linear both}
+#view-counter{position:absolute;left:50%;bottom:15%;transform:translateX(-50%);z-index:2;max-width:84%;padding:.48em .8em;background:#080b0ddc;border:1px solid #b5c2c0b3;border-radius:5px;color:#f5f5f2;font-size:clamp(12px,1.5vw,22px);line-height:1.45;text-align:center;text-shadow:0 1px 4px #000;white-space:normal;box-shadow:0 3px 16px #000a}
+@keyframes memory-rush{0%{opacity:.78;transform:translateX(var(--rush-x,3.2%)) scale(1.08)}65%,100%{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes memory-flash{0%{opacity:.58}18%{opacity:.46}100%{opacity:0}}
+#window-reveal{position:absolute;inset:0;z-index:3;pointer-events:none;background:#070c10 url('assets/window-reveal-user-reference-v1.png') center/cover no-repeat;animation:s17-reflection .45s ease-out both}
+#window-reveal.dawn{background-image:url('assets/window-reveal-dawn-v1.png')}
+@keyframes s17-reflection{from{opacity:0}to{opacity:1}}
+#clap-prompt{position:absolute;left:50%;bottom:18%;transform:translateX(-50%);z-index:10;padding:15px 30px;background:#151b1de8;border:1px solid #c8d2d1;color:#f5f6f4;font-size:clamp(13px,1.5vw,20px);white-space:nowrap;box-shadow:0 7px 25px #0008}
+@media(prefers-reduced-motion:reduce){#window-reveal,#montage-image.cut,#montage-flash.pulse{animation:none}#window-reveal{opacity:1}}
+
+/* R81 title only: image artwork, accessible real buttons. */
+#title.title-screen{position:fixed;inset:0;z-index:12;background:#101725;background-position:center;isolation:isolate;display:block;overflow-y:auto}
+/* R86: unchanged user PNG; only the isolated background rendering loses a little saturation. */
+#title.title-screen::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background-image:url('assets/title-background-r86-original.png');background-size:cover;background-repeat:no-repeat;background-position:inherit;filter:saturate(.85)}
+#title .title-content{z-index:1}
+#title .title-content{position:absolute;left:70%;top:25%;transform:translate(-50%,-50%);width:35vw;max-width:none;margin:0;padding:0;text-align:center}
+#title h1{margin:0;line-height:0;font-size:inherit;letter-spacing:normal}
+#title .title-logo{display:block;width:100%;height:auto;image-rendering:pixelated}
+#title .title-buttons{position:absolute;top:calc(100% + 3vh);left:50%;transform:translateX(-50%);display:flex;flex-direction:column;gap:1.5vh;width:60%;margin:0;padding-bottom:3vh}
+#title .title-menu{display:block;position:relative;width:100%;height:auto;min-height:44px;aspect-ratio:3 / 1;flex-shrink:0;padding:0;border:0;background:transparent;border-radius:4px;transition:filter .15s,background .15s}
+#title .title-menu:hover:not(:disabled){background:#11172466;filter:brightness(1.25)}
+#title .title-menu:focus-visible{outline:2px solid #f5d99a;outline-offset:3px;background:#11172477}
+#title .title-menu:disabled{opacity:.34;cursor:not-allowed;filter:grayscale(.5)}
+#title .menu-art{display:block;position:absolute;left:0;top:50%;width:100%;height:auto;aspect-ratio:3 / 1;transform:translateY(-50%);background-image:url('assets/title-menu-r81.png');background-repeat:no-repeat;background-size:100% auto;image-rendering:pixelated}
+#title .menu-new{background-position:center top}#title .menu-continue{background-position:center center}#title .menu-exit{background-position:center bottom}
+#title .continue-slot{width:100%;position:relative}#continue-status{display:block;font-size:clamp(10px,.85vw,12px);line-height:1.3;color:#c9b995;text-shadow:0 1px 3px #000;margin-top:-3px}
+#continue-status[hidden]{display:none}
+#exit-screen{position:fixed;z-index:13;justify-content:center;background:#080d14ed;text-align:center;overflow:auto;padding:24px}
+.exit-card{max-width:480px}.exit-card h2{font-family:serif;font-size:clamp(24px,3vw,38px);font-weight:400;color:#eed8ad}.exit-card p{line-height:1.8;color:#c3c8cf;margin:24px 0}.exit-card button{min-height:44px}
+@media(max-aspect-ratio:4/3){#title.title-screen{background-position:24% center}#title .title-content{left:69%;top:25%;width:47vw}#title .title-buttons{width:66%;gap:2vh;top:calc(100% + 4vh)}}
+@media(max-aspect-ratio:3/4){#title.title-screen{background-position:28% center}#title .title-content{left:62%;top:24%;width:69vw}#title .title-buttons{width:72%;top:calc(100% + 5vh);gap:2vh}#continue-status{font-size:11px}}
+@media(max-height:420px) and (min-aspect-ratio:4/3){#title .title-content{top:23%;width:35vw}#title .title-buttons{top:calc(100% + 2vh);gap:1vh}#continue-status{font-size:9px}}
+
+/* R83: each square-sheet row is 1254×418 (3:1). The art owns its aspect ratio; minimum button hit height never stretches it. */
+/* R84: numeric layout overrides on a choice group propagate to its recreated buttons. */
+:is(#choices,.measure-choices)[data-ui-font] button{font-size:inherit!important}
+:is(#choices,.measure-choices)[data-ui-leading] button{line-height:inherit!important}
+
+/* Editor-only fixture visibility; never enabled on normal game entry. */
+body[data-ui-preview="touch"] #touch{display:flex!important}
+body[data-ui-preview="toast"] #toast{opacity:1!important}

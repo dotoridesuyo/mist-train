@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#111716">
+  <title>다음 역 — 오늘은 여기까지</title>
+  <meta name="description" content="사후세계로 향하는 열차에서 미완성 노래를 함께 듣는 2D 내러티브 게임. 도윤 에피소드 데모.">
+  <link rel="preload" as="image" href="assets/window-reveal-dawn-v1.png">
+  <link rel="stylesheet" href="style.css?v=37">
+</head>
+<body>
+<main id="game" aria-label="다음 역 게임" tabindex="-1">
+  <canvas id="scene" width="1280" height="720" aria-label="횡스크롤 열차와 기억 속 녹음실"></canvas>
+  <div class="shade"></div>
+  <img id="first-contact-fracture" src="assets/doyun-first-contact-fracture-v1.png" alt="" aria-hidden="true" hidden>
+  <img id="doyun-intrusion" src="assets/doyun-intrusive-thought-v1.png" alt="" aria-hidden="true" hidden>
+  <img id="doyun-splatter" src="assets/doyun-blood-splatter-overlay-v1.png" alt="" aria-hidden="true" hidden>
+  <div id="life-montage" aria-hidden="true" hidden><div id="montage-image"></div><div id="montage-flash"></div><div id="view-counter" hidden></div></div>
+  <div id="montage-loading" role="status" aria-live="polite" hidden><p id="montage-loading-text">기억을 불러오고 있습니다.</p><button id="montage-retry" hidden>다시 불러오기</button></div>
+  <div id="window-reveal" aria-hidden="true" hidden></div>
+  <button id="clap-prompt" hidden>마지막 관객이 되어 주세요 · 박수 한 번</button>
+  <header id="hud" hidden>
+    <div id="status-panel">
+      <div class="status-heading">
+        <div class="location"><span class="rail-icon">▥</span><span id="place">이름 없는 열차</span><span class="dot"></span></div>
+      </div>
+      <div id="objective" hidden></div>
+      <div id="chapter" hidden><span id="chapter-title">창가의 청년</span><span id="chapter-number">01 / 04</span><span id="recording-count" hidden></span></div>
+    </div>
+  </header>
+  <div id="hint" hidden><span id="hint-key">E</span><span id="hint-text"></span></div>
+  <div id="toast" role="status"></div>
+  <div id="memory-window" hidden>
+    <canvas id="memory-scene" width="1280" height="720" aria-label="흑백으로 떠오르는 기억"></canvas>
+    <img class="memory-film-frame" src="assets/memory-film-frame.png" alt="" draggable="false">
+  </div>
+  <div id="memory-label" hidden></div>
+  <div id="listen-caption" hidden></div>
+  <div id="asset-loading" role="status"><span>열차를 준비하고 있습니다.</span><small>잠시만 기다려 주세요.</small></div>
+  <section id="dialogue" hidden aria-label="대화" aria-live="polite"><div class="dialogue-top"><span id="speaker"></span><span id="dialogue-context">오늘은 여기까지</span></div><p id="line"></p><div id="choices"></div><button id="advance">계속 <span>ENTER ↵</span></button></section>
+  <div id="controls" hidden><span>← → 이동</span><span>E 조사 / 대화</span><span>ESC 메뉴</span></div>
+  <div id="touch" hidden><button id="left" aria-label="왼쪽 이동">←</button><button id="right" aria-label="오른쪽 이동">→</button><button id="action">조사 E</button></div>
+  <section id="title" class="overlay title-screen" aria-label="안개 열차 메인 화면"><div class="title-content"><h1><img class="title-logo" src="assets/title-logo-r81.png" alt="안개 열차 Mist Train" draggable="false"></h1><div class="title-buttons"><button id="new-game" class="title-menu" aria-label="처음부터 걷기"><span class="menu-art menu-new" aria-hidden="true"></span></button><div class="continue-slot"><button id="continue" class="title-menu" aria-label="이어서 걷기" aria-describedby="continue-status" disabled><span class="menu-art menu-continue" aria-hidden="true"></span></button><span id="continue-status">저장된 여정 없음</span></div><button id="exit-game" class="title-menu" aria-label="종료"><span class="menu-art menu-exit" aria-hidden="true"></span></button></div></div></section>
+  <section id="exit-screen" class="overlay" aria-labelledby="exit-heading" hidden><div class="exit-card"><h2 id="exit-heading">오늘의 여정은 여기까지</h2><p>창을 닫으셔도 저장된 여정은 남아 있습니다.</p><button id="exit-return" class="primary">메인 화면으로 돌아가기</button></div></section>
+  <section id="menu" class="overlay modal" role="dialog" aria-modal="true" aria-labelledby="menu-title" hidden><div class="menu-card">
+    <div class="eyebrow">잠시 머무르기</div>
+    <h2 id="menu-title">천천히 가도 괜찮아요.</h2>
+    <label class="menu-setting volume-setting">음악<input id="volume" type="range" min="0" max="100" value="55"></label>
+    <label class="menu-setting font-setting">글자 크기<select id="text-size"><option value="1">기본</option><option value="1.15">크게</option><option value="1.3">더 크게</option></select></label>
+    <button id="to-title">첫 화면으로</button>
+    <button id="resume" class="primary">계속하기</button>
+    <small>주요 장면이 끝날 때 자동 저장됩니다.</small>
+  </div></section>
+  <section id="ending" class="overlay" hidden><div class="ending-content"><div class="eyebrow">오늘은 여기까지</div><h2>모습은 사라졌지만,<br>노래는 남아 있습니다.</h2><p>전하지 못한 말도, 남아 있는 상처도 있습니다.<br>그래도 누군가에게 닿은 노래와 그 뒤의 날들이 남았습니다.</p><div class="ending-rule"></div><p class="ending-note">〈다음 역〉 도윤 에피소드를 플레이해 주셔서 감사합니다.<br>이 열차의 다음 이야기는 아직 준비 중입니다.</p><button id="return-train" class="primary">열차에 조금 더 머무르기</button><button id="restart-end">처음부터 다시 걷기</button></div></section>
+  <div id="fade"></div>
+</main>
+<script src="ui-layout.js?v=1"></script><script src="story.js?v=22"></script><script src="s17-story-data.js?v=27"></script><script src="score.js?v=1"></script><script src="art.js?v=34"></script><script src="game.js?v=37"></script>
+<script src="ui-layout-runtime.js?v=1"></script>
+</body></html>
