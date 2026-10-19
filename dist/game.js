@@ -38,6 +38,11 @@ let firstContactSeen=false,fractureRemaining=0;
 let glimpseSeen=false,glimpseRemaining=0;
 const keys=new Set();
 let menuFocus=null,menuInert=[];
+// Keep logical/programmatic focus for keyboard navigation; pointer activation never shows its ring.
+let inputMode='pointer';
+function setInputMode(value){inputMode=value;$('game').setAttribute?.('data-input-mode',value);}
+setInputMode('pointer');
+for(const event of ['pointerdown','mousedown','touchstart'])document.addEventListener(event,()=>setInputMode('pointer'),{capture:true,passive:true});
 function focusElement(element){
  if(!element||element.hidden||element.disabled||element.isConnected===false||(typeof element.getClientRects==='function'&&!element.getClientRects().length))return false;
  element.focus?.({preventScroll:true});return true;
@@ -138,7 +143,7 @@ function measureDialogueHeight(force=false){
  }
  probe.remove();game.style.setProperty('--dialogue-fixed-height',Math.ceil(height+2)+'px');dialogueMeasurementKey=key;
 }
-function focusChoice(moveFocus=true){const buttons=Array.from($('choices').children);buttons.forEach((b,i)=>{b.style.borderColor=i===choiceIndex?'#d5dbc5':'';});if(moveFocus)focusElement(buttons[choiceIndex]);}
+function focusChoice(moveFocus=true){const buttons=Array.from($('choices').children);buttons.forEach((b,i)=>{b.style.borderColor=i===choiceIndex?'#d5dcdb':'';});if(moveFocus)focusElement(buttons[choiceIndex]);}
 function choose(i){const item=dialogue[lineIndex];if(!item||!item.choices)return;if(item.actions){tickSound();item.actions[i]();return;}dialogue=[...dialogue.slice(0,lineIndex),['나',item.choices[i][0]],['도윤',item.choices[i][1]],...dialogue.slice(lineIndex+1)];showLine();tickSound();}
 function showWindowReveal(){const el=$('window-reveal');el.classList.toggle('dawn',world==='train'&&['WINDOW_PENDING','WINDOW_REVEALED','WAITING_CLAP','DOYUN_DEPARTED'].includes(phase));el.hidden=false;}
 function afterCue(name){
@@ -228,6 +233,7 @@ $('volume').oninput=e=>{volume=Number(e.target.value)/100;applySettings();save()
 $('montage-retry').onclick=()=>startMontage(true);
 for(const [id,key] of [['left','ArrowLeft'],['right','ArrowRight']]){$(id).onpointerdown=e=>{e.preventDefault();keys.add(key);$(id).setPointerCapture(e.pointerId);};$(id).onpointerup=$(id).onpointercancel=()=>keys.delete(key);}
 document.addEventListener('keydown',e=>{
+ if(['Tab','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Enter',' ','Escape','e','E'].includes(e.key))setInputMode('keyboard');
  if(e.repeat&&['e','E','Enter',' ','Escape'].includes(e.key)){e.preventDefault();return;}
  if(e.key==='Escape'){e.preventDefault();if(mode==='exited')title();else pause();return;}
  if(mode==='menu'){if(e.key==='Tab')trapMenuTab(e);return;}

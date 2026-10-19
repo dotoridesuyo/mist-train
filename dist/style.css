@@ -4,7 +4,7 @@
 #title,#ending{overflow-y:auto;align-items:safe center;overscroll-behavior:contain}
 #title .title-content,#ending .ending-content{padding-block:16px}
 :root{color-scheme:dark;--ink:#e8e4d9;--muted:#a3aaa3;--accent:#bdcbbd;--text-scale:1}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#090d0d;color:var(--ink);font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif}body{display:grid;place-items:center}button,input,select{font:inherit}button{cursor:pointer;color:inherit;border:1px solid #67746a;background:#18221ee0;padding:12px 20px;transition:background .18s,border-color .18s}button:hover{background:#34443a;border-color:#b9c8bc}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #e0d5ad;outline-offset:4px}[hidden]{display:none!important}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#090d0d;color:var(--ink);font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif}body{display:grid;place-items:center}button,input,select{font:inherit}button{cursor:pointer;color:inherit;border:1px solid #67746a;background:#18221ee0;padding:12px 20px;transition:background .18s,border-color .18s}button:hover{background:#34443a;border-color:#b9c8bc}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #d5dcdb;outline-offset:4px}[hidden]{display:none!important}
 #game{position:relative;width:min(100vw,177.7778vh);height:min(100vh,56.25vw);overflow:hidden;background:#151b1c;isolation:isolate}canvas{width:100%;height:100%;display:block;image-rendering:pixelated}.shade{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 38%,#060b0b65);z-index:1}
 #hud{position:absolute;inset:4% 4% auto;display:flex;justify-content:space-between;align-items:center;z-index:3}.location{display:flex;align-items:center;gap:14px;background:#101919b8;border:1px solid #a1aaa168;padding:10px 16px;font-size:clamp(10px,1.25vw,17px);letter-spacing:.08em}.rail-icon{font-size:22px}.dot{width:5px;height:5px;background:#c5cdc3;border-radius:50%;margin-left:10px}#pause{padding:7px 13px;background:#0d15158a;border-color:#74807766}#chapter{position:absolute;top:16%;left:4.2%;display:flex;flex-direction:column;gap:9px;z-index:2;font-size:clamp(9px,1vw,14px);color:#d9ddd5}#chapter-number{font-size:10px;letter-spacing:.2em;color:#96aaa0}#objective{position:absolute;right:4%;top:16%;max-width:37%;font-size:clamp(9px,1.1vw,15px);color:#c3ccc5;text-align:right;z-index:2;text-shadow:0 2px 4px #000}#hint{position:absolute;display:flex;align-items:center;gap:9px;transform:translate(-50%,-100%);z-index:3;white-space:nowrap;padding:7px 10px;background:#111919e8;border:1px solid #a4b2a6;font-size:clamp(9px,1vw,14px)}#hint-key{border:1px solid #859289;padding:1px 5px;color:white}
 #controls{position:absolute;bottom:2.5%;left:4%;display:flex;gap:20px;font-size:clamp(8px,.85vw,12px);color:#9daaa1;z-index:2}#toast{position:absolute;top:28%;left:50%;transform:translateX(-50%);z-index:8;max-width:80%;background:#122018f5;border:1px solid #96a29b;padding:13px 24px;font-size:clamp(18px,1.9vw,24px);font-weight:400;line-height:1.5;text-align:center;color:#f2f3ee;text-shadow:0 1px 3px #000;box-shadow:0 8px 24px #0008;opacity:0;transition:opacity .3s;pointer-events:none}
@@ -156,7 +156,7 @@
 #title .title-buttons{position:absolute;top:calc(100% + 3vh);left:50%;transform:translateX(-50%);display:flex;flex-direction:column;gap:1.5vh;width:60%;margin:0;padding-bottom:3vh}
 #title .title-menu{display:block;position:relative;width:100%;height:auto;min-height:44px;aspect-ratio:3 / 1;flex-shrink:0;padding:0;border:0;background:transparent;border-radius:4px;transition:filter .15s,background .15s}
 #title .title-menu:hover:not(:disabled){background:#11172466;filter:brightness(1.25)}
-#title .title-menu:focus-visible{outline:2px solid #f5d99a;outline-offset:3px;background:#11172477}
+#title .title-menu:focus-visible{outline:2px solid #d5dcdb;outline-offset:3px;background:#11172477}
 #title .title-menu:disabled{opacity:.34;cursor:not-allowed;filter:grayscale(.5)}
 #title .menu-art{display:block;position:absolute;left:0;top:50%;width:100%;height:auto;aspect-ratio:3 / 1;transform:translateY(-50%);background-image:url('assets/title-menu-r81.png');background-repeat:no-repeat;background-size:100% auto;image-rendering:pixelated}
 #title .menu-new{background-position:center top}#title .menu-continue{background-position:center center}#title .menu-exit{background-position:center bottom}
@@ -176,3 +176,7 @@
 /* Editor-only fixture visibility; never enabled on normal game entry. */
 body[data-ui-preview="touch"] #touch{display:flex!important}
 body[data-ui-preview="toast"] #toast{opacity:1!important}
+
+/* R89 game only: pointer/touch ring off; keyboard focus remains visible in neutral gray. */
+#game[data-input-mode="pointer"] :is(button,input,select):focus{outline:none!important}
+#game[data-input-mode="keyboard"] :is(button,input,select):focus-visible{outline:2px solid #d5dcdb;outline-offset:4px}
