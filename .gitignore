@@ -1,0 +1,41 @@
+# Credentials and local account/session settings
+.env
+.env.*
+.envrc
+.git-credentials
+.netrc
+_netrc
+.npmrc
+.pypirc
+.ssh/
+id_rsa*
+id_ed25519*
+*service-account*.json
+*credentials*.json
+auth.json
+token.json
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*
+secrets/
+*.secrets.*
+.session*
+.openai/
+.codex/
+.agents/
+.aws/
+.vscode/
+.idea/
+# Build/runtime and private production records
+node_modules/
+work/
+outputs/
+*.log
+*.zip
+*.tar.gz
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
